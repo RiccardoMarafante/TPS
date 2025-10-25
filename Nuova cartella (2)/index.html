@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina Multimediale Online</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Contenuti Multimediali Online</h1>
+
+    <img class="centered-img" src="https://fde-sto-shop-p-001.ifolor.net/public/media/76/30/9a/1700591203/Panorama-580.jpg?ts=1700591203" alt="Immagine centrata">
+
+    <div class="slider">
+        <div><img src="https://img.pixers.pics/pho_wat(s3:700/FO/45/62/40/24/700_FO45624024_3d60404f87ef4d923995bea8219b10a7.jpg,700,468,cms:2018/10/5bd1b6b8d04b8_220x50-watermark.png,over,480,418,jpg)/carte-da-parati-dolomiti-panorama-di-montagna-in-italia-al-tramonto-tre-cime.jpg.jpg" alt="Foto 1"></div>
+        <div><img src="https://www.amarlaviaggi.it/wp-content/uploads/2024/02/pexels-axp-photography-19124733-scaled.jpg" alt="Foto 2"></div>
+        <div><img src="https://siviaggia.it/wp-content/uploads/sites/2/2021/03/Val-dorcia-alba.jpg" alt="Foto 3"></div>
+    </div>
+
+    <audio controls>
+         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+        Il tuo browser non supporta l'elemento audio.
+    </audio>
+
+<video controls poster="https://i.redd.it/1zlxckd9sua81.jpg">
+    <source src="https://www.w3schools.com/html/movie.mp4" type="video/mp4">
+    <track src="https://gist.githubusercontent.com/angel-codes/0da88c7ec2dd1c1231fcf0f55830fa32/raw/9a1f0a02ea097ad40a77e1560dc1a48e8850a36d/subtitles.vtt" kind="subtitles" srclang="it" label="Italiano" default>
+    Il tuo browser non supporta il tag video.
+</video>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.slider').slick({
+                autoplay: true,
+                dots: false
+            });
+        });
+    </script>
+    
+
+</body>
+</html>

@@ -3,12 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <title>Anagrafica Utente Semplificata</title>
+
   <style>
-    body { font-family: Arial; margin: 20px; }
-    label { display: block; margin-top: 10px; }
-    input { width: 300px; padding: 5px; }
-    button { margin-top: 15px; padding: 10px 20px; }
-    #risultato { margin-top: 20px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc; }
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 20px; 
+    }
+
+    label { 
+      display: block; 
+      margin-top: 10px; 
+    }
+
+    input { 
+      width: 300px; 
+      padding: 5px; 
+    }
+
+    button { 
+      margin-top: 15px; 
+      padding: 10px 20px; 
+    }
+
+    #risultato { 
+      margin-top: 20px; 
+      padding: 10px; 
+      background-color: #f0f0f0; 
+      border: 1px solid #ccc; 
+    }
   </style>
 </head>
 <body>
@@ -29,9 +51,12 @@
   <div id="risultato"></div>
 
   <script>
+    // Prendiamo il form e ascoltiamo quando l’utente clicca su “Invia”
     document.getElementById("anagraficaForm").addEventListener("submit", function(event) {
+      // Evita che la pagina si ricarichi
       event.preventDefault();
 
+      // Prendiamo i valori inseriti nei campi
       const nome = document.getElementById("nome").value.trim();
       const cognome = document.getElementById("cognome").value.trim();
       const indirizzo = document.getElementById("indirizzo").value.trim();
@@ -39,25 +64,50 @@
       const cap = document.getElementById("cap").value.trim();
       const anno = parseInt(document.getElementById("annoNascita").value);
 
+      // Calcoliamo l’anno attuale
       const annoCorrente = new Date().getFullYear();
 
+      // Controllo che l’anno sia valido
       if (isNaN(anno) || anno < 1900 || anno > annoCorrente) {
-        document.getElementById("risultato").innerHTML = "⚠️ Inserisci un anno valido tra 1900 e " + annoCorrente;
+        document.getElementById("risultato").innerHTML = 
+          "⚠️ Inserisci un anno valido tra 1900 e " + annoCorrente;
         return;
       }
 
+      // Calcolo dell’età
       const eta = annoCorrente - anno;
 
+      // Variabile per salvare il nome della generazione
       let generazione = "";
-      if (anno >= 2013) generazione = "Generazione Alpha";
-      else if (anno >= 1997) generazione = "Generazione Z";
-      else if (anno >= 1981) generazione = "Millennials";
-      else if (anno >= 1965) generazione = "Generazione X";
-      else if (anno >= 1946) generazione = "Baby Boomers";
-      else if (anno >= 1928) generazione = "Generazione Silenziosa";
-      else if (anno >= 1901) generazione = "Greatest Generation";
-      else generazione = "Non classificata";
 
+      // Determiniamo la generazione con uno switch
+      switch (true) {
+        case (anno >= 2013):
+          generazione = "Generazione Alpha";
+          break;
+        case (anno >= 1997):
+          generazione = "Generazione Z";
+          break;
+        case (anno >= 1981):
+          generazione = "Millennials";
+          break;
+        case (anno >= 1965):
+          generazione = "Generazione X";
+          break;
+        case (anno >= 1946):
+          generazione = "Baby Boomers";
+          break;
+        case (anno >= 1928):
+          generazione = "Generazione Silenziosa";
+          break;
+        case (anno >= 1901):
+          generazione = "Greatest Generation";
+          break;
+        default:
+          generazione = "Non classificata";
+      }
+
+      // Creiamo il testo da mostrare
       const risultato = `
         <h3>Dati inseriti:</h3>
         <p><strong>Nome:</strong> ${nome}</p>
@@ -70,6 +120,7 @@
         <p><strong>Generazione:</strong> ${generazione}</p>
       `;
 
+      // Mostriamo il risultato dentro il div
       document.getElementById("risultato").innerHTML = risultato;
     });
   </script>

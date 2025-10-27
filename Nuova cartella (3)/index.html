@@ -51,11 +51,12 @@
   <div id="risultato"></div>
 
   <script>
-
+    // Prendiamo il form e ascoltiamo quando l’utente clicca su “Invia”
     document.getElementById("anagraficaForm").addEventListener("submit", function(event) {
+      // Evita che la pagina si ricarichi
       event.preventDefault();
 
-
+      // Prendiamo i valori inseriti nei campi
       const nome = document.getElementById("nome").value.trim();
       const cognome = document.getElementById("cognome").value.trim();
       const indirizzo = document.getElementById("indirizzo").value.trim();
@@ -63,16 +64,23 @@
       const cap = document.getElementById("cap").value.trim();
       const anno = parseInt(document.getElementById("annoNascita").value);
 
-      const annoCorrente = 2025;
+      // Calcoliamo l’anno attuale
+      const annoCorrente = new Date().getFullYear();
 
-      if (anno < 1900 || anno > annoCorrente) {
+      // Controllo che l’anno sia valido
+      if (isNaN(anno) || anno < 1900 || anno > annoCorrente) {
         document.getElementById("risultato").innerHTML = 
-          "Inserisci un anno valido tra 1900 e " + annoCorrente;
+          "⚠️ Inserisci un anno valido tra 1900 e " + annoCorrente;
         return;
       }
 
+      // Calcolo dell’età
       const eta = annoCorrente - anno;
 
+      // Variabile per salvare il nome della generazione
+      let generazione = "";
+
+      // Determiniamo la generazione con uno switch
       switch (true) {
         case (anno >= 2013):
           generazione = "Generazione Alpha";
@@ -99,6 +107,7 @@
           generazione = "Non classificata";
       }
 
+      // Creiamo il testo da mostrare
       const risultato = `
         <h3>Dati inseriti:</h3>
         <p><strong>Nome:</strong> ${nome}</p>
@@ -118,4 +127,3 @@
 
 </body>
 </html>
-

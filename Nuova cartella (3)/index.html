@@ -61,10 +61,10 @@
       const cap = document.getElementById("cap").value.trim();
       const anno = parseInt(document.getElementById("annoNascita").value);
 
-      const annoCorrente = new Date().getFullYear();
+      const annoCorrente = 2025;
 
 
-      if (isNaN(anno) || anno < 1900 || anno > annoCorrente) {
+      if (anno < 1900 || anno > annoCorrente) {
         document.getElementById("risultato").innerHTML = 
           "Inserisci un anno valido tra 1900 e " + annoCorrente;
         return;
@@ -72,32 +72,31 @@
 
       const eta = annoCorrente - anno;
 
-      let generazione = "";
 
       switch (true) {
         case (anno >= 2013):
-          generazione = "Generazione Alpha";
+          const generazione = "Generazione Alpha";
           break;
         case (anno >= 1997):
-          generazione = "Generazione Z";
+          const generazione = "Generazione Z";
           break;
         case (anno >= 1981):
-          generazione = "Millennials";
+          const generazione = "Millennials";
           break;
         case (anno >= 1965):
-          generazione = "Generazione X";
+          const generazione = "Generazione X";
           break;
         case (anno >= 1946):
-          generazione = "Baby Boomers";
+          const generazione = "Baby Boomers";
           break;
         case (anno >= 1928):
-          generazione = "Generazione Silenziosa";
+          const generazione = "Generazione Silenziosa";
           break;
         case (anno >= 1901):
-          generazione = "Greatest Generation";
+          const generazione = "Greatest Generation";
           break;
         default:
-          generazione = "Non classificata";
+          const generazione = "Non classificata";
       }
 
       const risultato = `
@@ -118,4 +117,5 @@
 
 </body>
 </html>
+
 

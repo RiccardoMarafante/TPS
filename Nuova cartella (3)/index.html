@@ -52,7 +52,7 @@
 
   <script>
     document.getElementById("anagraficaForm").addEventListener("submit", function(event) {
-      event.preventDefault(); // <-- questa riga impedisce il ricaricamento della pagina
+      event.preventDefault();
 
       const nome = document.getElementById("nome").value.trim();
       const cognome = document.getElementById("cognome").value.trim();
@@ -63,32 +63,34 @@
 
       const annoCorrente = 2025;
 
-      if (anno < 1900 || anno > annoCorrente) {
-        document.getElementById("risultato").innerHTML = 
-          "Inserisci un anno valido tra 1900 e " + annoCorrente;
-        return;
-      }
-
       const eta = annoCorrente - anno;
-      let generazione = "";
+      const generazione = "";
+      switch (true) {
+       case (anno >= 2013):
+           generazione = "Generazione Alpha";
+           break;
+         case (anno >= 1997):
+           generazione = "Generazione Z";
+           break;
+         case (anno >= 1981):
+           generazione = "Millennials";
+           break;
+         case (anno >= 1965):
+           generazione = "Generazione X";
+           break;
+         case (anno >= 1946):
+          generazione = "Baby Boomers";
+           break;
+         case (anno >= 1928):
+           generazione = "Generazione Silenziosa";
+           break;
+         case (anno >= 1901):
+           generazione = "Greatest Generation";
+           break;
+         default:
+           generazione = "Non classificata";
+       }
 
-      if (anno >= 2013) {
-        generazione = "Generazione Alpha";
-      } else if (anno >= 1997) {
-        generazione = "Generazione Z";
-      } else if (anno >= 1981) {
-        generazione = "Millennials";
-      } else if (anno >= 1965) {
-        generazione = "Generazione X";
-      } else if (anno >= 1946) {
-        generazione = "Baby Boomers";
-      } else if (anno >= 1928) {
-        generazione = "Generazione Silenziosa";
-      } else if (anno >= 1901) {
-        generazione = "Greatest Generation";
-      } else {
-        generazione = "Non classificata";
-      }
 
       const risultato = `
         <h3>Dati inseriti:</h3>
@@ -108,3 +110,4 @@
 
 </body>
 </html>
+

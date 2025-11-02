@@ -19,9 +19,6 @@
       padding: 5px 10px;
       text-align: center;
     }
-
-    .positivo { background-color: #c8f7c5; }
-    .negativo { background-color: #f9c0c0; }
   </style>
 </head>
 <body>
@@ -41,7 +38,7 @@
       var maggiori50 = [];
 
       for (var i = 0; i < 100; i++) {
-        var n = Math.floor(Math.random() * 201) - 100;
+        var n = Math.floor(Math.random() * 201) - 100; 
         numeri.push(n);
         somma = somma + n;
 
@@ -60,21 +57,17 @@
 
       var media = somma / numeri.length;
 
-
       var html = "<h3>Risultati</h3>";
-      html += "<p>Media: <strong>" + media.toFixed(2) + "</strong></p>";
+      html += "<p>Media: <strong>" + media + "</strong></p>";
       html += "<p>Massimo: <strong>" + massimo + "</strong></p>";
       html += "<p>Minimo: <strong>" + minimo + "</strong></p>";
       html += "<p>Numeri maggiori di 50: <strong>" + maggiori50.length + "</strong></p>";
-
 
       html += "<h3>Griglia dei numeri generati:</h3>";
       html += "<table><tr>";
 
       for (var j = 0; j < numeri.length; j++) {
-        var colore = numeri[j] >= 0 ? "positivo" : "negativo";
-        html += "<td class='" + colore + "'>" + numeri[j] + "</td>";
-
+        html += "<td>" + numeri[j] + "</td>";
 
         if ((j + 1) % 10 === 0) {
           html += "</tr><tr>";

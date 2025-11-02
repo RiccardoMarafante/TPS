@@ -3,34 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Anagrafica Utente</title>
-
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      margin: 20px; 
-    }
-
-    label { 
-      display: block; 
-      margin-top: 10px; 
-    }
-
-    input { 
-      width: 300px; 
-      padding: 5px; 
-    }
-
-    button { 
-      margin-top: 15px; 
-      padding: 10px 20px; 
-    }
-
-    #risultato { 
-      margin-top: 20px; 
-      padding: 10px; 
-      background-color: #f0f0f0; 
-      border: 1px solid #ccc; 
-    }
+    body { font-family: Arial; margin: 20px; }
+    label { display: block; margin-top: 10px; }
+    input { width: 300px; padding: 5px; }
+    button { margin-top: 15px; padding: 10px 20px; }
+    #risultato { margin-top: 20px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc; }
   </style>
 </head>
 <body>
@@ -40,11 +18,7 @@
   <form id="anagraficaForm">
     <label>Nome: <input type="text" id="nome" required></label>
     <label>Cognome: <input type="text" id="cognome" required></label>
-    <label>Indirizzo: <input type="text" id="indirizzo" required></label>
-    <label>Città: <input type="text" id="citta" required></label>
-    <label>CAP: <input type="text" id="cap" pattern="\d{5}" required></label>
     <label>Anno di nascita: <input type="number" id="annoNascita" min="1900" max="2025" required></label>
-
     <button type="submit">Invia</button>
   </form>
 
@@ -52,57 +26,20 @@
 
   <script>
     document.getElementById("anagraficaForm").addEventListener("submit", function(event) {
-      event.preventDefault(); // <-- questa riga impedisce il ricaricamento della pagina
+      event.preventDefault(); // blocca il ricaricamento
 
       const nome = document.getElementById("nome").value.trim();
       const cognome = document.getElementById("cognome").value.trim();
-      const indirizzo = document.getElementById("indirizzo").value.trim();
-      const citta = document.getElementById("citta").value.trim();
-      const cap = document.getElementById("cap").value.trim();
       const anno = parseInt(document.getElementById("annoNascita").value);
-
       const annoCorrente = 2025;
-
-      if (anno < 1900 || anno > annoCorrente) {
-        document.getElementById("risultato").innerHTML = 
-          "Inserisci un anno valido tra 1900 e " + annoCorrente;
-        return;
-      }
-
       const eta = annoCorrente - anno;
-      let generazione = "";
 
-      if (anno >= 2013) {
-        generazione = "Generazione Alpha";
-      } else if (anno >= 1997) {
-        generazione = "Generazione Z";
-      } else if (anno >= 1981) {
-        generazione = "Millennials";
-      } else if (anno >= 1965) {
-        generazione = "Generazione X";
-      } else if (anno >= 1946) {
-        generazione = "Baby Boomers";
-      } else if (anno >= 1928) {
-        generazione = "Generazione Silenziosa";
-      } else if (anno >= 1901) {
-        generazione = "Greatest Generation";
-      } else {
-        generazione = "Non classificata";
-      }
-
-      const risultato = `
-        <h3>Dati inseriti:</h3>
-        <p><strong>Nome:</strong> ${nome}</p>
-        <p><strong>Cognome:</strong> ${cognome}</p>
-        <p><strong>Indirizzo:</strong> ${indirizzo}</p>
-        <p><strong>Città:</strong> ${citta}</p>
-        <p><strong>CAP:</strong> ${cap}</p>
-        <p><strong>Anno di nascita:</strong> ${anno}</p>
-        <p><strong>Età:</strong> ${eta} anni</p>
-        <p><strong>Generazione:</strong> ${generazione}</p>
+      document.getElementById("risultato").innerHTML = `
+        <h3>Risultato</h3>
+        <p>Nome: ${nome}</p>
+        <p>Cognome: ${cognome}</p>
+        <p>Età: ${eta}</p>
       `;
-
-      document.getElementById("risultato").innerHTML = risultato;
     });
   </script>
 

@@ -13,16 +13,27 @@
     label { 
       display: block; 
       margin-top: 10px; 
+      font-weight: bold;
     }
 
-    input, select { 
+    input[type="text"],
+    input[type="number"],
+    select { 
       width: 300px; 
       padding: 5px; 
+    }
+
+    .gruppo-radio, .gruppo-checkbox {
+      margin-top: 5px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
     }
 
     button { 
       margin-top: 15px; 
       padding: 10px 20px; 
+      cursor: pointer;
     }
 
     #risultato { 
@@ -48,10 +59,11 @@
 
     <!-- RADIOBUTTON SESSO -->
     <label>Sesso:</label>
-    <input type="radio" name="sesso" value="Maschio"> Maschio
-    <input type="radio" name="sesso" value="Femmina"> Femmina
-    <input type="radio" name="sesso" value="Altro"> Altro
-    <br><br>
+    <div class="gruppo-radio">
+      <label><input type="radio" name="sesso" value="Maschio"> Maschio</label>
+      <label><input type="radio" name="sesso" value="Femmina"> Femmina</label>
+      <label><input type="radio" name="sesso" value="Altro"> Altro</label>
+    </div>
 
     <!-- COMBOBOX PROVINCIA -->
     <label>Provincia:</label>
@@ -63,20 +75,20 @@
       <option value="TO">Torino</option>
       <option value="FI">Firenze</option>
     </select>
-    <br><br>
 
     <!-- CHECKBOX MEZZI DI LOCOMOZIONE -->
     <label>Mezzi di locomozione posseduti in famiglia:</label>
-    <input type="checkbox" name="mezzo" value="Auto"> Auto
-    <input type="checkbox" name="mezzo" value="Moto"> Moto
-    <input type="checkbox" name="mezzo" value="Bici"> Bici
-    <input type="checkbox" name="mezzo" value="Aereo"> Aereo
-    <input type="checkbox" name="mezzo" value="Yacht"> Yacht
-    <br><br>
+    <div class="gruppo-checkbox">
+      <label><input type="checkbox" name="mezzo" value="Auto"> Auto</label>
+      <label><input type="checkbox" name="mezzo" value="Moto"> Moto</label>
+      <label><input type="checkbox" name="mezzo" value="Bici"> Bici</label>
+      <label><input type="checkbox" name="mezzo" value="Aereo"> Aereo</label>
+      <label><input type="checkbox" name="mezzo" value="Yacht"> Yacht</label>
+    </div>
 
     <!-- LISTBOX MATERIE -->
     <label>Materie di insegnamento preferite (max 3):</label>
-    <select id="materie" multiple size="6">
+    <select id="materie" multiple size="6" style="width: 320px;">
       <option value="Matematica">Matematica</option>
       <option value="Italiano">Italiano</option>
       <option value="Inglese">Inglese</option>
@@ -87,8 +99,8 @@
       <option value="Musica">Musica</option>
       <option value="Educazione Fisica">Educazione Fisica</option>
     </select>
-    <br><br>
 
+    <br><br>
     <button type="button" onclick="mostraDati()">Invia</button>
   </form>
 
@@ -96,7 +108,6 @@
 
   <script>
     function mostraDati() {
-      // Prendo i valori base
       var nome = document.getElementById("nome").value;
       var cognome = document.getElementById("cognome").value;
       var indirizzo = document.getElementById("indirizzo").value;
@@ -104,11 +115,9 @@
       var cap = document.getElementById("cap").value;
       var anno = parseInt(document.getElementById("annoNascita").value);
 
-      // Calcolo età
       var annoCorrente = 2025;
       var eta = annoCorrente - anno;
 
-      // Trovo la generazione
       var generazione;
       switch (true) {
         case (anno >= 2013):
@@ -129,25 +138,29 @@
           generazione = "Non classificata";
       }
 
+      var sesso = document.querySelector('input[name="sesso"]:checked');
+      sesso = sesso ? sesso.value : "Non specificato";
 
-  //    var provincia = document.getElementById("provincia").value;
-    //  if (provincia === "") provincia = "Non selezionata";
+      var provincia = document.getElementById("provincia").value || "Non selezionata";
 
       var mezzi = document.querySelectorAll('input[name="mezzo"]:checked');
       var mezziPosseduti = [];
       mezzi.forEach(function(m) {
         mezziPosseduti.push(m.value);
       });
-      if (mezziPosseduti.length === 0) {
-        mezziPosseduti = ["Nessuno"];
-      }
+      if (mezziPosseduti.length === 0) mezziPosseduti = ["Nessuno"];
 
       var materieSelezionate = [];
       var materie = document.getElementById("materie");
-      for (var i = 0; i < 3; i++) {
+      for (var i = 0; i < materie.options.length; i++) {
         if (materie.options[i].selected) {
           materieSelezionate.push(materie.options[i].value);
         }
+      }
+
+      if (materieSelezionate.length > 3) {
+        alert("Puoi selezionare al massimo 3 materie!");
+        return;
       }
 
       document.getElementById("risultato").innerHTML =
@@ -162,8 +175,8 @@
         "Generazione: " + generazione + "<br>" +
         "Sesso: " + sesso + "<br>" +
         "Provincia: " + provincia + "<br>" +
-        "Mezzi posseduti: " + mezziPosseduti + "<br>" +
-        "Materie preferite: " + materieSelezionate;
+        "Mezzi posseduti: " + mezziPosseduti.join(', ') + "<br>" +
+        "Materie preferite: " + materieSelezionate.join(', ');
     }
   </script>
 

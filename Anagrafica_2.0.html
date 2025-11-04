@@ -23,13 +23,6 @@
       padding: 5px; 
     }
 
-    .gruppo-radio, .gruppo-checkbox {
-      margin-top: 5px;
-      margin-bottom: 10px;
-      display: flex;
-      flex-direction: column;
-    }
-
     button { 
       margin-top: 15px; 
       padding: 10px 20px; 
@@ -57,7 +50,6 @@
     CAP: <input type="text" id="cap"><br><br>
     Anno di nascita: <input type="number" id="annoNascita"><br><br>
 
-    <!-- RADIOBUTTON SESSO -->
     <label>Sesso:</label>
     <div class="gruppo-radio">
       <label><input type="radio" name="sesso" value="Maschio"> Maschio</label>
@@ -65,7 +57,6 @@
       <label><input type="radio" name="sesso" value="Altro"> Altro</label>
     </div>
 
-    <!-- COMBOBOX PROVINCIA -->
     <label>Provincia:</label>
     <select id="provincia">
       <option value="">-- Seleziona provincia --</option>
@@ -76,7 +67,6 @@
       <option value="FI">Firenze</option>
     </select>
 
-    <!-- CHECKBOX MEZZI DI LOCOMOZIONE -->
     <label>Mezzi di locomozione posseduti in famiglia:</label>
     <div class="gruppo-checkbox">
       <label><input type="checkbox" name="mezzo" value="Auto"> Auto</label>
@@ -86,7 +76,6 @@
       <label><input type="checkbox" name="mezzo" value="Yacht"> Yacht</label>
     </div>
 
-    <!-- LISTBOX MATERIE -->
     <label>Materie di insegnamento preferite (max 3):</label>
     <select id="materie" multiple size="6" style="width: 320px;">
       <option value="Matematica">Matematica</option>
@@ -115,7 +104,6 @@
       var cap = document.getElementById("cap").value;
       var anno = parseInt(document.getElementById("annoNascita").value);
 
-      // Calcolo età e generazione
       var annoCorrente = 2025;
       var eta = annoCorrente - anno;
 
@@ -131,39 +119,28 @@
         default: generazione = "Non classificata";
       }
 
-      // --- Sesso semplificato ---
       var sesso = "";
       if (document.getElementById("anagraficaForm").sesso[0].checked) sesso = "Maschio";
       else if (document.getElementById("anagraficaForm").sesso[1].checked) sesso = "Femmina";
       else if (document.getElementById("anagraficaForm").sesso[2].checked) sesso = "Altro";
-      // Se non selezionato, sesso resta ""
 
-      // --- Provincia ---
       var provincia = document.getElementById("provincia").value;
 
-      // --- Mezzi di locomozione (semplice) ---
       var mezzi = "";
       if (document.getElementById("anagraficaForm").mezzo[0].checked) mezzi += "Auto ";
       if (document.getElementById("anagraficaForm").mezzo[1].checked) mezzi += "Moto ";
       if (document.getElementById("anagraficaForm").mezzo[2].checked) mezzi += "Bici ";
       if (document.getElementById("anagraficaForm").mezzo[3].checked) mezzi += "Aereo ";
       if (document.getElementById("anagraficaForm").mezzo[4].checked) mezzi += "Yacht ";
-      // Se nessuno selezionato, mezzi resta ""
 
-      // --- Materie ---
       var materieSelezionate = [];
       var materie = document.getElementById("materie");
-      for (var i = 0; i < materie.options.length; i++) {
+      for (var i = 0; i < 3; i++) {
         if (materie.options[i].selected) {
           materieSelezionate.push(materie.options[i].value);
         }
       }
-      if (materieSelezionate.length > 3) {
-        alert("Puoi selezionare al massimo 3 materie!");
-        return;
-      }
-
-      // --- Mostra risultati ---
+      
       document.getElementById("risultato").innerHTML =
         "<h3>Dati inseriti:</h3>" +
         "Nome: " + nome + "<br>" +

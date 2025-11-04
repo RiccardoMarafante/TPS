@@ -135,7 +135,7 @@
 
       var materieSelezionate = [];
       var materie = document.getElementById("materie");
-      for (var i = 0; i < 3; i++) {
+      for (var i = 0; i < materie.options[i].selected; i++) {
         if (materie.options[i].selected) {
           materieSelezionate.push(materie.options[i].value);
         }

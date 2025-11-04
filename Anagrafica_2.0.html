@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Anagrafica Utente</title>
+
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 20px; 
+    }
+
+    label { 
+      display: block; 
+      margin-top: 10px; 
+    }
+
+    input, select { 
+      width: 300px; 
+      padding: 5px; 
+    }
+
+    button { 
+      margin-top: 15px; 
+      padding: 10px 20px; 
+    }
+
+    #risultato { 
+      margin-top: 20px; 
+      padding: 10px; 
+      background-color: #f0f0f0; 
+      border: 1px solid #ccc; 
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Inserisci i dati anagrafici</h2>
+
+  <form id="anagraficaForm">
+    Nome: <input type="text" id="nome"><br><br>
+    Cognome: <input type="text" id="cognome"><br><br>
+    Indirizzo: <input type="text" id="indirizzo"><br><br>
+    Città: <input type="text" id="citta"><br><br>
+    CAP: <input type="text" id="cap"><br><br>
+    Anno di nascita: <input type="number" id="annoNascita"><br><br>
+
+    <!-- RADIOBUTTON SESSO -->
+    <label>Sesso:</label>
+    <input type="radio" name="sesso" value="Maschio"> Maschio
+    <input type="radio" name="sesso" value="Femmina"> Femmina
+    <input type="radio" name="sesso" value="Altro"> Altro
+    <br><br>
+
+    <!-- COMBOBOX PROVINCIA -->
+    <label>Provincia:</label>
+    <select id="provincia">
+      <option value="">-- Seleziona provincia --</option>
+      <option value="MI">Milano</option>
+      <option value="RM">Roma</option>
+      <option value="NA">Napoli</option>
+      <option value="TO">Torino</option>
+      <option value="FI">Firenze</option>
+    </select>
+    <br><br>
+
+    <!-- CHECKBOX MEZZI DI LOCOMOZIONE -->
+    <label>Mezzi di locomozione posseduti in famiglia:</label>
+    <input type="checkbox" name="mezzo" value="Auto"> Auto
+    <input type="checkbox" name="mezzo" value="Moto"> Moto
+    <input type="checkbox" name="mezzo" value="Bici"> Bici
+    <input type="checkbox" name="mezzo" value="Aereo"> Aereo
+    <input type="checkbox" name="mezzo" value="Yacht"> Yacht
+    <br><br>
+
+    <!-- LISTBOX MATERIE -->
+    <label>Materie di insegnamento preferite (max 3):</label>
+    <select id="materie" multiple size="6">
+      <option value="Matematica">Matematica</option>
+      <option value="Italiano">Italiano</option>
+      <option value="Inglese">Inglese</option>
+      <option value="Storia">Storia</option>
+      <option value="Geografia">Geografia</option>
+      <option value="Scienze">Scienze</option>
+      <option value="Arte">Arte</option>
+      <option value="Musica">Musica</option>
+      <option value="Educazione Fisica">Educazione Fisica</option>
+    </select>
+    <br><br>
+
+    <button type="button" onclick="mostraDati()">Invia</button>
+  </form>
+
+  <div id="risultato"></div>
+
+  <script>
+    function mostraDati() {
+      // Prendo i valori base
+      var nome = document.getElementById("nome").value;
+      var cognome = document.getElementById("cognome").value;
+      var indirizzo = document.getElementById("indirizzo").value;
+      var citta = document.getElementById("citta").value;
+      var cap = document.getElementById("cap").value;
+      var anno = parseInt(document.getElementById("annoNascita").value);
+
+      // Calcolo età
+      var annoCorrente = 2025;
+      var eta = annoCorrente - anno;
+
+      // Trovo la generazione
+      var generazione;
+      switch (true) {
+        case (anno >= 2013):
+          generazione = "Generazione Alpha"; break;
+        case (anno >= 1997):
+          generazione = "Generazione Z"; break;
+        case (anno >= 1981):
+          generazione = "Millennials"; break;
+        case (anno >= 1965):
+          generazione = "Generazione X"; break;
+        case (anno >= 1946):
+          generazione = "Baby Boomers"; break;
+        case (anno >= 1928):
+          generazione = "Generazione Silenziosa"; break;
+        case (anno >= 1901):
+          generazione = "Greatest Generation"; break;
+        default:
+          generazione = "Non classificata";
+      }
+
+      // RADIOBUTTON SESSO
+      var sesso = document.querySelector('input[name="sesso"]:checked');
+      if (sesso) {
+        sesso = sesso.value;
+      } else {
+        sesso = "Non specificato";
+      }
+
+      // COMBOBOX PROVINCIA
+      var provincia = document.getElementById("provincia").value;
+      if (provincia === "") provincia = "Non selezionata";
+
+      // CHECKBOX MEZZI DI LOCOMOZIONE
+      var mezzi = document.querySelectorAll('input[name="mezzo"]:checked');
+      var mezziPosseduti = [];
+      mezzi.forEach(function(m) {
+        mezziPosseduti.push(m.value);
+      });
+      if (mezziPosseduti.length === 0) {
+        mezziPosseduti = ["Nessuno"];
+      }
+
+      // LISTBOX MATERIE (max 3)
+      var materieSelezionate = [];
+      var materie = document.getElementById("materie");
+      for (var i = 0; i < materie.options.length; i++) {
+        if (materie.options[i].selected) {
+          materieSelezionate.push(materie.options[i].value);
+        }
+      }
+
+      if (materieSelezionate.length > 3) {
+        alert("Puoi selezionare al massimo 3 materie!");
+        return; // esce dalla funzione
+      }
+
+      // Mostro tutto
+      document.getElementById("risultato").innerHTML =
+        "<h3>Dati inseriti:</h3>" +
+        "Nome: " + nome + "<br>" +
+        "Cognome: " + cognome + "<br>" +
+        "Indirizzo: " + indirizzo + "<br>" +
+        "Città: " + citta + "<br>" +
+        "CAP: " + cap + "<br>" +
+        "Anno di nascita: " + anno + "<br>" +
+        "Età: " + eta + " anni<br>" +
+        "Generazione: " + generazione + "<br>" +
+        "Sesso: " + sesso + "<br>" +
+        "Provincia: " + provincia + "<br>" +
+        "Mezzi posseduti: " + mezziPosseduti.join(", ") + "<br>" +
+        "Materie preferite: " + materieSelezionate.join(", ");
+    }
+  </script>
+
+</body>
+</html>

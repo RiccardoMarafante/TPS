@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Anagrafica Utente</title>
+  <title>Anagrafica Utente (Versione Principiante)</title>
 
   <style>
     body { 
@@ -51,11 +51,10 @@
     Anno di nascita: <input type="number" id="annoNascita"><br><br>
 
     <label>Sesso:</label>
-    <div class="gruppo-radio">
-      <label><input type="radio" name="sesso" value="Maschio"> Maschio</label>
-      <label><input type="radio" name="sesso" value="Femmina"> Femmina</label>
-      <label><input type="radio" name="sesso" value="Altro"> Altro</label>
-    </div>
+    <input type="radio" name="sesso" id="sessoM" value="Maschio"> Maschio
+    <input type="radio" name="sesso" id="sessoF" value="Femmina"> Femmina
+    <input type="radio" name="sesso" id="sessoA" value="Altro"> Altro
+    <br><br>
 
     <label>Provincia:</label>
     <select id="provincia">
@@ -68,15 +67,14 @@
     </select>
 
     <label>Mezzi di locomozione posseduti in famiglia:</label>
-    <div class="gruppo-checkbox">
-      <label><input type="checkbox" name="mezzo" value="Auto"> Auto</label>
-      <label><input type="checkbox" name="mezzo" value="Moto"> Moto</label>
-      <label><input type="checkbox" name="mezzo" value="Bici"> Bici</label>
-      <label><input type="checkbox" name="mezzo" value="Aereo"> Aereo</label>
-      <label><input type="checkbox" name="mezzo" value="Yacht"> Yacht</label>
-    </div>
+    <input type="checkbox" id="auto" value="Auto"> Auto
+    <input type="checkbox" id="moto" value="Moto"> Moto
+    <input type="checkbox" id="bici" value="Bici"> Bici
+    <input type="checkbox" id="aereo" value="Aereo"> Aereo
+    <input type="checkbox" id="yacht" value="Yacht"> Yacht
+    <br><br>
 
-    <label>Materie di insegnamento preferite (max 3):</label>
+    <label>Materie di insegnamento preferite</label><br>
     <select id="materie" multiple size="6" style="width: 320px;">
       <option value="Matematica">Matematica</option>
       <option value="Italiano">Italiano</option>
@@ -107,40 +105,65 @@
       var annoCorrente = 2025;
       var eta = annoCorrente - anno;
 
-      var generazione;
-      switch (true) {
-        case (anno >= 2013): generazione = "Generazione Alpha"; break;
-        case (anno >= 1997): generazione = "Generazione Z"; break;
-        case (anno >= 1981): generazione = "Millennials"; break;
-        case (anno >= 1965): generazione = "Generazione X"; break;
-        case (anno >= 1946): generazione = "Baby Boomers"; break;
-        case (anno >= 1928): generazione = "Generazione Silenziosa"; break;
-        case (anno >= 1901): generazione = "Greatest Generation"; break;
-        default: generazione = "Non classificata";
+      var generazione = "";
+      if (anno >= 2013) {
+        generazione = "Generazione Alpha";
+      } else if (anno >= 1997) {
+        generazione = "Generazione Z";
+      } else if (anno >= 1981) {
+        generazione = "Millennials";
+      } else if (anno >= 1965) {
+        generazione = "Generazione X";
+      } else if (anno >= 1946) {
+        generazione = "Baby Boomers";
+      } else if (anno >= 1928) {
+        generazione = "Generazione Silenziosa";
+      } else if (anno >= 1901) {
+        generazione = "Greatest Generation";
+      } else {
+        generazione = "Non classificata";
       }
 
       var sesso = "";
-      if (document.getElementById("anagraficaForm").sesso[0].checked) sesso = "Maschio";
-      else if (document.getElementById("anagraficaForm").sesso[1].checked) sesso = "Femmina";
-      else if (document.getElementById("anagraficaForm").sesso[2].checked) sesso = "Altro";
+      if (document.getElementById("sessoM").checked) {
+        sesso = "Maschio";
+      }
+      if (document.getElementById("sessoF").checked) {
+        sesso = "Femmina";
+      }
+      if (document.getElementById("sessoA").checked) {
+        sesso = "Altro";
+      }
 
       var provincia = document.getElementById("provincia").value;
 
       var mezzi = "";
-      if (document.getElementById("anagraficaForm").mezzo[0].checked) mezzi += "Auto ";
-      if (document.getElementById("anagraficaForm").mezzo[1].checked) mezzi += "Moto ";
-      if (document.getElementById("anagraficaForm").mezzo[2].checked) mezzi += "Bici ";
-      if (document.getElementById("anagraficaForm").mezzo[3].checked) mezzi += "Aereo ";
-      if (document.getElementById("anagraficaForm").mezzo[4].checked) mezzi += "Yacht ";
+      if (document.getElementById("auto").checked) {
+        mezzi = mezzi + "Auto ";
+      }
+      if (document.getElementById("moto").checked) {
+        mezzi = mezzi + "Moto ";
+      }
+      if (document.getElementById("bici").checked) {
+        mezzi = mezzi + "Bici ";
+      }
+      if (document.getElementById("aereo").checked) {
+        mezzi = mezzi + "Aereo ";
+      }
+      if (document.getElementById("yacht").checked) {
+        mezzi = mezzi + "Yacht ";
+      }
 
-      var materieSelezionate = [];
-      var materie = document.getElementById("materie");
-      for (var i = 0; i < materie.options[i].selected; i++) {
-        if (materie.options[i].selected) {
-          materieSelezionate.push(materie.options[i].value);
+      var materieScelte = "";
+      var listaMaterie = document.getElementById("materie");
+      var count = 0;
+      for (var i = 0; i < listaMaterie.options.length; i++) {
+        if (listaMaterie.options[i].selected) {
+          materieScelte = materieScelte + listaMaterie.options[i].value + ", ";
+          count = count + 1;
         }
       }
-      
+
       document.getElementById("risultato").innerHTML =
         "<h3>Dati inseriti:</h3>" +
         "Nome: " + nome + "<br>" +
@@ -150,11 +173,11 @@
         "CAP: " + cap + "<br>" +
         "Anno di nascita: " + (anno || "") + "<br>" +
         "Età: " + (eta || "") + " anni<br>" +
-        "Generazione: " + (generazione || "") + "<br>" +
+        "Generazione: " + generazione + "<br>" +
         "Sesso: " + sesso + "<br>" +
         "Provincia: " + provincia + "<br>" +
         "Mezzi posseduti: " + mezzi + "<br>" +
-        "Materie preferite: " + materieSelezionate.join(", ");
+        "Materie preferite: " + materieScelte;
     }
   </script>
 

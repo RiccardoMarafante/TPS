@@ -43,7 +43,6 @@
   <h2>Inserisci i dati anagrafici</h2>
 
   <form id="anagraficaForm">
-    
     Nome: <input type="text" id="nome"><br><br>
     Cognome: <input type="text" id="cognome"><br><br>
     Indirizzo: <input type="text" id="indirizzo"><br><br>
@@ -52,9 +51,9 @@
     Anno di nascita: <input type="number" id="annoNascita"><br><br>
 
     <label>Sesso:</label>
-    <input type="radio" name="sesso" value="Maschio"> Maschio
-    <input type="radio" name="sesso" value="Femmina"> Femmina
-    <input type="radio" name="sesso" value="Altro"> Altro
+    <input type="radio" name="sesso" id="sessoM" value="Maschio"> Maschio
+    <input type="radio" name="sesso" id="sessoF" value="Femmina"> Femmina
+    <input type="radio" name="sesso" id="sessoA" value="Altro"> Altro
     <br><br>
 
     <label>Provincia:</label>
@@ -68,11 +67,11 @@
     </select>
 
     <label>Mezzi posseduti in famiglia:</label>
-    <input type="checkbox" class="mezzo" value="Auto"> Auto
-    <input type="checkbox" class="mezzo" value="Moto"> Moto
-    <input type="checkbox" class="mezzo" value="Bici"> Bici
-    <input type="checkbox" class="mezzo" value="Aereo"> Aereo
-    <input type="checkbox" class="mezzo" value="Yacht"> Yacht
+    <input type="checkbox" id="auto" value="Auto"> Auto
+    <input type="checkbox" id="moto" value="Moto"> Moto
+    <input type="checkbox" id="bici" value="Bici"> Bici
+    <input type="checkbox" id="aereo" value="Aereo"> Aereo
+    <input type="checkbox" id="yacht" value="Yacht"> Yacht
     <br><br>
 
     <label>Materie di insegnamento preferite</label><br>
@@ -201,5 +200,4 @@
 </script>
   
 </body>
-  
 </html>

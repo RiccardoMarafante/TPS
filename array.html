@@ -5,22 +5,73 @@
   <title>Esercizio Array Numeri</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
+      font-family: "Poppins", Arial, sans-serif;
+      margin: 30px;
+      background: linear-gradient(135deg, #eef2f3, #d9e4ec);
+      color: #2c3e50;
+    }
+
+    h2, h3 {
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 8px;
+      background: #3498db;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    button:hover {
+      background: #217dbb;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+    }
+
+    #risultati {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      backdrop-filter: blur(4px);
     }
 
     table {
       border-collapse: collapse;
-      margin-top: 20px;
+      margin: 20px auto;
+      width: 100%;
+      max-width: 800px;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
     td, th {
-      border: 1px solid #999;
-      padding: 5px 10px;
+      border: 1px solid #d0d0d0;
+      padding: 10px;
       text-align: center;
+      font-size: 1rem;
+    }
+
+    tr:nth-child(even) td {
+      background: #f4f7fa;
+    }
+
+    strong {
+      color: #1a73e8;
     }
   </style>
-  
 </head>
 <body>
 

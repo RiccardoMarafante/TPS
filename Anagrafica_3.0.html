@@ -6,36 +6,104 @@
 
   <style>
     body { 
-      font-family: Arial, sans-serif; 
-      margin: 20px; 
+      font-family: "Poppins", Arial, sans-serif;
+      margin: 30px;
+      background: linear-gradient(135deg, #eef2f3, #d9e4ec);
+      color: #2c3e50;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 2em;
+      letter-spacing: 1px;
+    }
+
+    form {
+      max-width: 600px;
+      margin: auto;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      backdrop-filter: blur(4px);
     }
 
     label { 
       display: block; 
-      margin-top: 10px; 
-      font-weight: bold;
+      margin-top: 15px; 
+      font-weight: 600;
+      font-size: 1.1em;
     }
 
     input[type="text"],
     input[type="number"],
     select { 
-      width: 300px; 
-      padding: 5px; 
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    button { 
-      margin-top: 15px; 
-      padding: 10px 20px; 
+    input[type="radio"],
+    input[type="checkbox"] {
+      margin-right: 5px;
+      transform: scale(1.2);
       cursor: pointer;
     }
 
-    #risultato { 
+    button { 
       margin-top: 20px; 
-      padding: 10px; 
-      background-color: #f0f0f0; 
+      padding: 12px 20px; 
+      cursor: pointer;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1em;
+      transition: 0.3s ease;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    button:hover {
+      background: #217dbb;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+
+    #materie {
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #999;
+      padding: 5px;
+      background: #ffffff;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #risultato { 
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px; 
+      background: rgba(255, 255, 255, 0.85); 
+      border-radius: 12px;
       border: 1px solid #ccc; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      backdrop-filter: blur(3px);
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    h3 {
+      margin-top: 0;
     }
   </style>
+  
 </head>
 
 <body>

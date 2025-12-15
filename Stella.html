@@ -10,19 +10,14 @@
 <script>
     
     let canvas = document.getElementById("myCanvas");
-    let ctx = canvas.getContext("2d");
-
-    let centerX = 200;
-    let centerY = 200;
 
     ctx.beginPath();
-    ctx.arc(centerX, centerY, 150, 0, 2 * Math.PI);
+    ctx.arc(200, 200, 150, 0, 2 * Math.PI);
     ctx.fillStyle = "lightblue"; 
     ctx.fill();
     ctx.strokeStyle = "blue";  
     ctx.stroke();
 
-    
     ctx.beginPath();
 
     ctx.moveTo(200, 80);   

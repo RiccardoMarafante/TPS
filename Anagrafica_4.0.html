@@ -52,7 +52,6 @@
   <br><br>
   <button type="button" onclick="aggiungiPersona()">Aggiungi persona</button>
   <button type="button" onclick="vaiAllaStampa()">Vai alla stampa</button>
-  <button type="button" onclick="resetDati()">Cancella dati</button>
 </form>
 
 <script>
@@ -121,11 +120,6 @@ function vaiAllaStampa() {
   for (let i = 0; i < persone.length; i++) {
     indici += persone[i].indice + ",";
   }
-
-function resetDati() {
-  localStorage.removeItem("persone");
-  alert("Dati cancellati");
-}
   
   window.location.href = "stampa.html?indici=" + indici;
 }

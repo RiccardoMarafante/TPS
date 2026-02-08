@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Stampa Anagrafica</title>
+</head>
+<body>
+
+<h2>Elenco anagrafico</h2>
+
+<table border="1" cellpadding="6">
+  <tr>
+    <th>Indice</th>
+    <th>Nome</th>
+    <th>Cognome</th>
+    <th>Età</th>
+    <th>Sesso</th>
+    <th>Provincia</th>
+  </tr>
+  <tbody id="tabella"></tbody>
+</table>
+
+<script>
+let parametri = new URLSearchParams(window.location.search);
+let indici = parametri.get("indici").split(",");
+
+let persone = JSON.parse(localStorage.getItem("persone"));
+let tabella = document.getElementById("tabella");
+
+for (let i = 0; i < persone.length; i++) {
+  if (indici.indexOf(persone[i].indice) !== -1) {
+    tabella.innerHTML +=
+      "<tr>" +
+      "<td>" + persone[i].indice + "</td>" +
+      "<td>" + persone[i].nome + "</td>" +
+      "<td>" + persone[i].cognome + "</td>" +
+      "<td>" + persone[i].eta + "</td>" +
+      "<td>" + persone[i].sesso + "</td>" +
+      "<td>" + persone[i].provincia + "</td>" +
+      "</tr>";
+  }
+}
+</script>
+
+</body>
+</html>

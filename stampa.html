@@ -3,48 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <title>Stampa Anagrafica</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 30px; background: #eef2f3; color: #2c3e50; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #333; padding: 8px; text-align: left; }
-    th { background: #3498db; color: #fff; }
-    button { margin-top: 20px; padding: 10px 20px; cursor: pointer; }
-  </style>
 </head>
 <body>
 
-<h2>Elenco Persone</h2>
-<table id="tabella">
+<h2>Elenco anagrafico</h2>
+
+<table border="1" cellpadding="6">
   <tr>
-    <th>Indice</th><th>Nome</th><th>Cognome</th><th>Età</th><th>Generazione</th>
+    <th>Indice</th>
+    <th>Nome</th>
+    <th>Cognome</th>
+    <th>Età</th>
+    <th>Sesso</th>
+    <th>Provincia</th>
   </tr>
+  <tbody id="tabella"></tbody>
 </table>
 
-<button onclick="resetDati()">Reset e Ricomincia</button>
-
 <script>
-let url = new URL(window.location.href);
-let indici = url.searchParams.get("indici").split(",");
-let persone = JSON.parse(localStorage.getItem("persone")) || [];
+let parametri = new URLSearchParams(window.location.search);
+let indici = parametri.get("indici").split(",");
+
+let persone = JSON.parse(localStorage.getItem("persone"));
 let tabella = document.getElementById("tabella");
 
-for(let i=0;i<persone.length;i++){
-  if(indici.includes(persone[i].indice)){
-    let riga = tabella.insertRow();
-    riga.insertCell(0).innerText = persone[i].indice;
-    riga.insertCell(1).innerText = persone[i].nome;
-    riga.insertCell(2).innerText = persone[i].cognome;
-    riga.insertCell(3).innerText = persone[i].eta;
-    riga.insertCell(4).innerText = persone[i].generazione;
+for (let i = 0; i < persone.length; i++) {
+  if (indici.indexOf(persone[i].indice) !== -1) {
+    tabella.innerHTML +=
+      "<tr>" +
+      "<td>" + persone[i].indice + "</td>" +
+      "<td>" + persone[i].nome + "</td>" +
+      "<td>" + persone[i].cognome + "</td>" +
+      "<td>" + persone[i].eta + "</td>" +
+      "<td>" + persone[i].sesso + "</td>" +
+      "<td>" + persone[i].provincia + "</td>" +
+      "</tr>";
   }
-}
-
-function resetDati() {
-  localStorage.removeItem("persone");
-  window.location.href = "anagrafica4.html";
 }
 </script>
 
 </body>
 </html>
-

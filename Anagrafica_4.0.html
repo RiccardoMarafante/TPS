@@ -2,28 +2,129 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Anagrafica 4.0 - Pagina 1</title>
+  <title>Anagrafica 4.0</title>
 </head>
 <body>
 
-<h2>Inserimento multiplo persone</h2>
+<h2>Inserisci i dati anagrafici</h2>
 
-<button onclick="salvaPersone()">Salva e vai alla pagina 2</button>
+<form id="anagraficaForm">
+  Nome: <input type="text" id="nome"><br><br>
+  Cognome: <input type="text" id="cognome"><br><br>
+  Indirizzo: <input type="text" id="indirizzo"><br><br>
+  Città: <input type="text" id="citta"><br><br>
+  CAP: <input type="text" id="cap"><br><br>
+  Anno di nascita: <input type="number" id="annoNascita"><br><br>
+
+  <label>Sesso:</label>
+  <input type="radio" name="sesso" id="sessoM" value="Maschio"> Maschio
+  <input type="radio" name="sesso" id="sessoF" value="Femmina"> Femmina
+  <input type="radio" name="sesso" id="sessoA" value="Altro"> Altro
+  <br><br>
+
+  <label>Provincia:</label>
+  <select id="provincia">
+    <option value="">-- Seleziona provincia --</option>
+    <option value="MI">Milano</option>
+    <option value="RM">Roma</option>
+    <option value="NA">Napoli</option>
+    <option value="TO">Torino</option>
+    <option value="FI">Firenze</option>
+  </select>
+
+  <label>Mezzi posseduti:</label><br>
+  <input type="checkbox" id="auto" value="Auto"> Auto
+  <input type="checkbox" id="moto" value="Moto"> Moto
+  <input type="checkbox" id="bici" value="Bici"> Bici
+  <input type="checkbox" id="aereo" value="Aereo"> Aereo
+  <input type="checkbox" id="yacht" value="Yacht"> Yacht
+  <br><br>
+
+  <label>Materie preferite</label><br>
+  <select id="materie" multiple size="5">
+    <option value="Matematica">Matematica</option>
+    <option value="Italiano">Italiano</option>
+    <option value="Inglese">Inglese</option>
+    <option value="Storia">Storia</option>
+    <option value="Scienze">Scienze</option>
+  </select>
+
+  <br><br>
+  <button type="button" onclick="aggiungiPersona()">Aggiungi persona</button>
+  <button type="button" onclick="vaiAllaStampa()">Vai alla stampa</button>
+</form>
 
 <script>
-  function salvaPersone() {
+function aggiungiPersona() {
 
-    let persone = [
-      { nome: "Gino", cognome: "Latilla", eta: 32, indice: "01" },
-      { nome: "Pino", cognome: "Rossi", eta: 42, indice: "02" }
-    ];
-
-    localStorage.setItem("persone", JSON.stringify(persone));
-
-    let indici = "01,02";
-
-    window.location.href = "pagina2.html?indici=" + indici;
+  let persone = JSON.parse(localStorage.getItem("persone"));
+  if (persone === null) {
+    persone = [];
   }
+
+  let persona = {
+    indice: "",
+    nome: document.getElementById("nome").value,
+    cognome: document.getElementById("cognome").value,
+    indirizzo: document.getElementById("indirizzo").value,
+    citta: document.getElementById("citta").value,
+    cap: document.getElementById("cap").value,
+    annoNascita: parseInt(document.getElementById("annoNascita").value),
+    eta: 0,
+    generazione: "",
+    sesso: "",
+    provincia: document.getElementById("provincia").value,
+    mezzi: "",
+    materie: ""
+  };
+
+  let annoCorrente = 2026;
+  persona.eta = annoCorrente - persona.annoNascita;
+
+  if (persona.annoNascita >= 1997) {
+    persona.generazione = "Generazione Z";
+  } else if (persona.annoNascita >= 1981) {
+    persona.generazione = "Millennials";
+  } else {
+    persona.generazione = "Altro";
+  }
+
+  if (document.getElementById("sessoM").checked) persona.sesso = "Maschio";
+  if (document.getElementById("sessoF").checked) persona.sesso = "Femmina";
+  if (document.getElementById("sessoA").checked) persona.sesso = "Altro";
+  if (document.getElementById("auto").checked) persona.mezzi += "Auto ";
+  if (document.getElementById("moto").checked) persona.mezzi += "Moto ";
+  if (document.getElementById("bici").checked) persona.mezzi += "Bici ";
+  if (document.getElementById("aereo").checked) persona.mezzi += "Aereo ";
+  if (document.getElementById("yacht").checked) persona.mezzi += "Yacht ";
+
+  let lista = document.getElementById("materie");
+  for (let i = 0; i < lista.options.length; i++) {
+    if (lista.options[i].selected) {
+      persona.materie += lista.options[i].value + " ";
+    }
+  }
+
+  let numero = persone.length + 1;
+
+  persone.push(persona);
+
+  localStorage.setItem("persone", JSON.stringify(persone));
+
+  alert("Persona aggiunta correttamente!");
+}
+  
+function vaiAllaStampa() {
+  let persone = JSON.parse(localStorage.getItem("persone"));
+  let indici = "";
+
+  for (let i = 0; i < persone.length; i++) {
+    indici += persone[i].indice + ",";
+  }
+
+  indici = indici.slice(0, -1);
+  window.location.href = "stampa.html?indici=" + indici;
+}
 </script>
 
 </body>

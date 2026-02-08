@@ -3,26 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <title>Anagrafica 4.0</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  margin: 20px;
+}
+h2 {
+  color: #333;
+}
+form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+input[type=text], input[type=number], select {
+  width: 95%;
+  padding: 5px;
+  margin: 5px 0 15px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+button {
+  padding: 8px 12px;
+  margin: 5px 5px 5px 0;
+  border: none;
+  border-radius: 4px;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #45a049;
+}
+label {
+  font-weight: bold;
+}
+</style>
 </head>
 <body>
 
 <h2>Inserisci i dati anagrafici</h2>
 
 <form id="anagraficaForm">
-  Nome: <input type="text" id="nome"><br><br>
-  Cognome: <input type="text" id="cognome"><br><br>
-  Indirizzo: <input type="text" id="indirizzo"><br><br>
-  Città: <input type="text" id="citta"><br><br>
-  CAP: <input type="text" id="cap"><br><br>
-  Anno di nascita: <input type="number" id="annoNascita"><br><br>
+  Nome: <input type="text" id="nome"><br>
+  Cognome: <input type="text" id="cognome"><br>
+  Indirizzo: <input type="text" id="indirizzo"><br>
+  Città: <input type="text" id="citta"><br>
+  CAP: <input type="text" id="cap"><br>
+  Anno di nascita: <input type="number" id="annoNascita"><br>
 
-  <label>Sesso:</label>
+  <label>Sesso:</label><br>
   <input type="radio" name="sesso" id="sessoM" value="Maschio"> Maschio
   <input type="radio" name="sesso" id="sessoF" value="Femmina"> Femmina
   <input type="radio" name="sesso" id="sessoA" value="Altro"> Altro
   <br><br>
 
-  <label>Provincia:</label>
+  <label>Provincia:</label><br>
   <select id="provincia">
     <option value="">-- Seleziona provincia --</option>
     <option value="MI">Milano</option>
@@ -31,6 +70,7 @@
     <option value="TO">Torino</option>
     <option value="FI">Firenze</option>
   </select>
+  <br><br>
 
   <label>Mezzi posseduti:</label><br>
   <input type="checkbox" id="auto" value="Auto"> Auto
@@ -40,7 +80,7 @@
   <input type="checkbox" id="yacht" value="Yacht"> Yacht
   <br><br>
 
-  <label>Materie preferite</label><br>
+  <label>Materie preferite:</label><br>
   <select id="materie" multiple size="5">
     <option value="Matematica">Matematica</option>
     <option value="Italiano">Italiano</option>
@@ -48,8 +88,8 @@
     <option value="Storia">Storia</option>
     <option value="Scienze">Scienze</option>
   </select>
-
   <br><br>
+
   <button type="button" onclick="aggiungiPersona()">Aggiungi persona</button>
   <button type="button" onclick="vaiAllaStampa()">Vai alla stampa</button>
   <button type="button" onclick="resetDati()">Reset dati</button>
@@ -77,7 +117,6 @@ function aggiungiPersona() {
     mezzi: "",
     materie: ""
   };
-
   if(persona.annoNascita >= 1997) persona.generazione="Generazione Z";
   else if(persona.annoNascita >= 1981) persona.generazione="Millennials";
   else persona.generazione="Altro";

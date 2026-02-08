@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Anagrafica 4.0 - Pagina 1</title>
+</head>
+<body>
+
+<h2>Inserimento multiplo persone</h2>
+
+<button onclick="salvaPersone()">Salva e vai alla pagina 2</button>
+
+<script>
+  function salvaPersone() {
+
+    let persone = [
+      { nome: "Gino", cognome: "Latilla", eta: 32, indice: "01" },
+      { nome: "Pino", cognome: "Rossi", eta: 42, indice: "02" }
+    ];
+
+    localStorage.setItem("persone", JSON.stringify(persone));
+
+    let indici = "01,02";
+
+    window.location.href = "pagina2.html?indici=" + indici;
+  }
+</script>
+
+</body>
+</html>

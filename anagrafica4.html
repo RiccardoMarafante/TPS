@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Anagrafica 4.0</title>
+<meta charset="UTF-8">
+<title>Anagrafica 4.0</title>
 </head>
 <body>
 
@@ -52,74 +52,61 @@
   <br><br>
   <button type="button" onclick="aggiungiPersona()">Aggiungi persona</button>
   <button type="button" onclick="vaiAllaStampa()">Vai alla stampa</button>
+  <button type="button" onclick="resetDati()">Reset dati</button>
 </form>
 
 <script>
+let persone = JSON.parse(localStorage.getItem("persone")) || [];
+
 function aggiungiPersona() {
-
-  let persone = JSON.parse(localStorage.getItem("persone"));
- 
-
+  let numero = persone.length + 1;
   let persona = {
-    indice: "",
+    indice: numero<10?"0"+numero:numero,
     nome: document.getElementById("nome").value,
     cognome: document.getElementById("cognome").value,
     indirizzo: document.getElementById("indirizzo").value,
     citta: document.getElementById("citta").value,
     cap: document.getElementById("cap").value,
     annoNascita: parseInt(document.getElementById("annoNascita").value),
-    eta: 0,
+    eta: 2025 - parseInt(document.getElementById("annoNascita").value),
     generazione: "",
-    sesso: "",
+    sesso: document.getElementById("sessoM").checked ? "Maschio" :
+           document.getElementById("sessoF").checked ? "Femmina" :
+           document.getElementById("sessoA").checked ? "Altro" : "",
     provincia: document.getElementById("provincia").value,
     mezzi: "",
     materie: ""
   };
 
-  let annoCorrente = 2025;
-  persona.eta = annoCorrente - persona.annoNascita;
+  if(persona.annoNascita >= 1997) persona.generazione="Generazione Z";
+  else if(persona.annoNascita >= 1981) persona.generazione="Millennials";
+  else persona.generazione="Altro";
 
-  if (persona.annoNascita >= 1997) {
-    persona.generazione = "Generazione Z";
-  } else if (persona.annoNascita >= 1981) {
-    persona.generazione = "Millennials";
-  } else {
-    persona.generazione = "Altro";
-  }
-
-  if (document.getElementById("sessoM").checked) persona.sesso = "Maschio";
-  if (document.getElementById("sessoF").checked) persona.sesso = "Femmina";
-  if (document.getElementById("sessoA").checked) persona.sesso = "Altro";
-
-  if (document.getElementById("auto").checked) persona.mezzi += "Auto ";
-  if (document.getElementById("moto").checked) persona.mezzi += "Moto ";
-  if (document.getElementById("bici").checked) persona.mezzi += "Bici ";
-  if (document.getElementById("aereo").checked) persona.mezzi += "Aereo ";
-  if (document.getElementById("yacht").checked) persona.mezzi += "Yacht ";
+  if(document.getElementById("auto").checked) persona.mezzi+="Auto ";
+  if(document.getElementById("moto").checked) persona.mezzi+="Moto ";
+  if(document.getElementById("bici").checked) persona.mezzi+="Bici ";
+  if(document.getElementById("aereo").checked) persona.mezzi+="Aereo ";
+  if(document.getElementById("yacht").checked) persona.mezzi+="Yacht ";
 
   let lista = document.getElementById("materie");
-  for (let i = 0; i < lista.options.length; i++) {
-    if (lista.options[i].selected) {
-      persona.materie += lista.options[i].value + " ";
-    }
+  for(let i=0;i<lista.options.length;i++){
+    if(lista.options[i].selected) persona.materie+=lista.options[i].value+" ";
   }
 
   persone.push(persona);
-
   localStorage.setItem("persone", JSON.stringify(persone));
-
   alert("Persona aggiunta correttamente!");
 }
-  
+
 function vaiAllaStampa() {
-  let persone = JSON.parse(localStorage.getItem("persone"));
-  let indici = "";
+  let indici = persone.map(p=>p.indice).join(",");
+  window.location.href="stampa.html?indici="+indici;
+}
 
-  for (let i = 0; i < persone.length; i++) {
-    indici += persone[i].indice + ",";
-  }
-
-  window.location.href = "stampa.html?indici=" + indici;
+function resetDati() {
+  localStorage.removeItem("persone");
+  persone=[];
+  alert("Dati cancellati, puoi ricominciare!");
 }
 </script>
 

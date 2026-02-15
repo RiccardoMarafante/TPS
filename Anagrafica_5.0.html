@@ -1,1 +1,183 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Anagrafica Utente 5.0</title>
+  <style>
+    body { 
+      font-family: "Poppins", Arial, sans-serif;
+      margin: 30px;
+      background: linear-gradient(135deg, #eef2f3, #d9e4ec);
+      color: #2c3e50;
+    }
 
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 2em;
+      letter-spacing: 1px;
+    }
+
+    form {
+      max-width: 600px;
+      margin: auto;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      backdrop-filter: blur(4px);
+    }
+
+    label { 
+      display: block;
+      margin-top: 15px; 
+      font-weight: 600;
+      font-size: 1.1em;
+    }
+
+    input { 
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 10px;
+      border: 1px solid #bbb;
+      font-size: 1em;
+      background: #fdfdfd;
+      box-sizing: border-box;
+    }
+
+    button { 
+      margin-top: 30px; 
+      padding: 12px 20px; 
+      cursor: pointer;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1em;
+      transition: 0.3s ease;
+      display: block;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    button:hover {
+      background: #217dbb;
+      transform: translateY(-2px);
+    }
+
+    #risultato { 
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px; 
+      background: rgba(255, 255, 255, 0.9); 
+      border-radius: 12px;
+      border: 1px solid #ccc; 
+      display: none; 
+    }
+
+    .error {
+      color: #e74c3c;
+      font-weight: bold;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Inserisci i dati anagrafici</h2>
+
+  <form id="anagraficaForm">
+    <label>Nome:</label>
+    <input type="text" id="nome" placeholder="Solo lettere">
+    
+    <label>Cognome:</label>
+    <input type="text" id="cognome" placeholder="Solo lettere">
+    
+    <label>Username:</label>
+    <input type="text" id="username" placeholder="3-16 caratteri (lettere, numeri, speciali)">
+
+    <label>Email:</label>
+    <input type="text" id="email" placeholder="esempio@dominio.it">
+
+    <label>CAP:</label>
+    <input type="text" id="cap" maxlength="5" placeholder="5 cifre numeriche">
+
+    <label>Anno di nascita:</label>
+    <input type="number" id="annoNascita" placeholder="Es. 1995">
+
+    <button type="button" onclick="validaEMostra()">Invia Dati</button>
+    <div id="errorMessage" class="error"></div>
+  </form>
+
+  <div id="risultato"></div>
+
+  <script>
+    function validaEMostra() {
+      const nome = document.getElementById("nome").value.trim();
+      const cognome = document.getElementById("cognome").value.trim();
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const cap = document.getElementById("cap").value.trim();
+      const anno = document.getElementById("annoNascita").value;
+      const errorDiv = document.getElementById("errorMessage");
+      const risultatoDiv = document.getElementById("risultato");
+
+      errorDiv.innerHTML = ""; 
+
+      const regexLettere = /^[a-zA-Z\sàèìòùÀÈÌÒÙáéíóúÁÉÍÓÚ]+$/;
+      if (!regexLettere.test(nome) || !regexLettere.test(cognome)) {
+        errorDiv.innerHTML = "Nome e Cognome devono contenere solo lettere.";
+        return;
+      }
+
+      if (username.length < 3 || username.length > 16) {
+        errorDiv.innerHTML = "Lo Username deve essere tra 3 e 16 caratteri.";
+        return;
+      }
+
+      const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!regexEmail.test(email)) {
+        errorDiv.innerHTML = "Inserire un indirizzo Email valido.";
+        return;
+      }
+
+      const regexCap = /^[0-9]{5}$/;
+      if (!regexCap.test(cap)) {
+        errorDiv.innerHTML = "Il CAP deve essere composto da esattamente 5 numeri.";
+        return;
+      }
+
+      if (!anno || anno < 1900 || anno > 2026) {
+        errorDiv.innerHTML = "Inserire un anno di nascita valido.";
+        return;
+      }
+
+      const annoCorrente = 2026;
+      const eta = annoCorrente - anno;
+      let generazione;
+
+      if (anno >= 2013) generazione = "Generazione Alpha";
+      else if (anno >= 1997) generazione = "Generazione Z";
+      else if (anno >= 1981) generazione = "Millennials";
+      else if (anno >= 1965) generazione = "Generazione X";
+      else if (anno >= 1946) generazione = "Baby Boomers";
+      else if (anno >= 1928) generazione = "Generazione Silenziosa";
+      else generazione = "Greatest Generation";
+
+      risultatoDiv.style.display = "block";
+      risultatoDiv.innerHTML = `
+        <h3>Dati Validati con Successo!</h3>
+        <hr>
+        <strong>Nome Completo:</strong> ${nome} ${cognome}<br>
+        <strong>Username:</strong> ${username}<br>
+        <strong>Email:</strong> ${email}<br>
+        <strong>CAP:</strong> ${cap}<br>
+        <strong>Età:</strong> ${eta} anni<br>
+        <strong>Generazione:</strong> ${generazione}`;
+    }
+  </script>
+
+</body>
+</html>

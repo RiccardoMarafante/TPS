@@ -126,7 +126,7 @@
 
       errorDiv.innerHTML = ""; 
 
-      const regexLettere = /^[a-zA-Z\sàèìòùÀÈÌÒÙáéíóúÁÉÍÓÚ]+$/;
+      const regexLettere = /^[a-zA-Z]+$/;
       if (!regexLettere.test(nome) || !regexLettere.test(cognome)) {
         errorDiv.innerHTML = "Nome e Cognome devono contenere solo lettere.";
         return;
@@ -136,8 +136,8 @@
         errorDiv.innerHTML = "Lo Username deve essere tra 3 e 16 caratteri.";
         return;
       }
-
-      const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      
+      const regexEmail = /\S+@\S+\.\S+/;
       if (!regexEmail.test(email)) {
         errorDiv.innerHTML = "Inserire un indirizzo Email valido.";
         return;

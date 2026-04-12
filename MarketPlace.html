@@ -49,7 +49,6 @@
 
     input.onchange = function(e) {
         let file = e.target.files[0];
-     //   if (!file) return;
 
         let lettore = new FileReader();
         lettore.onload = function(evento) {
@@ -64,11 +63,9 @@
         let htmlFinale = "";
 
         for (let i = 1; i < righe.length; i++) {
-            // .trim() pulisce la riga da spazi bianchi o invii a capo invisibili
             let riga = righe[i].trim().split(',');
 
             if (riga.length >= 4) {
-                // ATTENZIONE QUI: Usiamo \" per passare i valori alla funzione seleziona
                 htmlFinale += "<div class='card'>";
                 htmlFinale += "<b>" + riga[0] + "</b><br>";
                 htmlFinale += "<h3>" + riga[1] + "</h3>";
@@ -85,13 +82,9 @@
         articoloScelto = nome;
         prezzoScelto = prezzo;
 
-        // Scriviamo il testo nel riquadro
         document.getElementById('nome-prodotto').innerHTML = nome + " (" + prezzo + " €)";
-        
-        // Mostriamo l'area nascosta
         document.getElementById('area-acquisto').style.display = "block";
-        
-        // Portiamo l'utente verso il modulo
+    
       //  window.scrollTo(0, document.body.scrollHeight);
     }
 
@@ -111,7 +104,7 @@
         doc.text("Prodotto: " + articoloScelto, 20, 70);
         doc.text("Prezzo: " + prezzoScelto + " Euro", 20, 80);
         
-      //  doc.save("ricevuta.pdf");
+        doc.save("ricevuta.pdf");
     }
 </script>
 

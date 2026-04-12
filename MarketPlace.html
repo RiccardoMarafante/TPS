@@ -71,13 +71,17 @@
                 htmlFinale += "<h3>" + riga[1] + "</h3>";
                 htmlFinale += "<p>" + riga[2] + "</p>";
                 htmlFinale += "<b>" + riga[3] + " €</b><br><br>";
-                htmlFinale += "<button onclick=\"seleziona('" + riga[1].replace(/'/g, "") + "', '" + riga[3] + "')\">Scegli</button>";
+                htmlFinale += "<button data-nome='" + riga[1] + "' data-prezzo='" + riga[3] + "' onclick='selezionaDagliAttributi(this)'>Scegli</button>";
                 htmlFinale += "</div>";
             }
         }
         vetrina.innerHTML = htmlFinale;
     }
-
+    function selezionaDagliAttributi(elemento) {
+    var nome = elemento.getAttribute("data-nome");
+    var prezzo = elemento.getAttribute("data-prezzo");
+    seleziona(nome, prezzo);
+}
     function seleziona(nome, prezzo) {
         articoloScelto = nome;
         prezzoScelto = prezzo;
@@ -85,7 +89,6 @@
         document.getElementById('nome-prodotto').innerHTML = nome + " (" + prezzo + " €)";
         document.getElementById('area-acquisto').style.display = "block";
     
-      //  window.scrollTo(0, document.body.scrollHeight);
     }
 
     function generaRicevuta() {

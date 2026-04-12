@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Platform Marketplace</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card h3 { margin-top: 0; color: #333; }
+        .price { font-weight: bold; color: #2ecc71; }
+        .form-section { background: #eee; padding: 20px; border-radius: 8px; margin-top: 30px; display: none; }
+        button { cursor: pointer; padding: 10px; background: #3498db; color: white; border: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <h2>1. Carica il Catalogo (CSV)</h2>
+    <input type="file" id="csvFile" accept=".csv">
+
+    <div id="catalog" class="grid"></div>
+
+    <div id="checkout" class="form-section">
+        <h2>2. Registrazione e Acquisto</h2>
+        <input type="text" id="nome" placeholder="Nome Completo"><br><br>
+        <input type="email" id="email" placeholder="Email"><br><br>
+        <p>Oggetto selezionato: <span id="itemSelected"></span></p>
+        <button onclick="generaPDF()">Conferma Acquisto e Scarica PDF</button>
+    </div>
+
+    <script>
+        const csvFile = document.getElementById('csvFile');
+        const catalog = document.getElementById('catalog');
+        const checkout = document.getElementById('checkout');
+        let selectedProduct = null;
+
+        csvFile.addEventListener('change', function(e) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const text = event.target.result;
+                processData(text);
+            };
+            reader.readAsText(e.target.files[0]);
+        });
+
+        function processData(allText) {
+            const lines = allText.split(/\r?\n/).slice(1); // Salta l'intestazione
+            catalog.innerHTML = "";
+            
+            lines.forEach(line => {
+                const [tipo, nome, dettaglio, prezzo] = line.split(',');
+                if(nome) {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <small>${tipo}</small>
+                        <h3>${nome}</h3>
+                        <p>${dettaglio}</p>
+                        <p class="price">${prezzo} €</p>
+                        <button onclick="selezionaOggetto('${nome}', '${prezzo}')">Aggiungi al Carrello</button>
+                    `;
+                    catalog.appendChild(card);
+                }
+            });
+        }
+
+        function selezionaOggetto(nome, prezzo) {
+            selectedProduct = { nome, prezzo };
+            document.getElementById('itemSelected').innerText = nome + " (" + prezzo + "€)";
+            checkout.style.display = "block";
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        async function generaPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const nomeUtente = document.getElementById('nome').value;
+            const emailUtente = document.getElementById('email').value;
+
+            if(!nomeUtente || !emailUtente) {
+                alert("Inserisci i tuoi dati!");
+                return;
+            }
+
+            doc.setFontSize(20);
+            doc.text("Ricevuta d'Acquisto", 20, 20);
+            doc.setFontSize(12);
+            doc.text(`Cliente: ${nomeUtente}`, 20, 40);
+            doc.text(`Email: ${emailUtente}`, 20, 50);
+            doc.text(`Prodotto: ${selectedProduct.nome}`, 20, 70);
+            doc.text(`Totale: ${selectedProduct.prezzo} €`, 20, 80);
+            doc.text("Grazie per il tuo acquisto!", 20, 110);
+
+            doc.save(`Ricevuta_${selectedProduct.nome}.pdf`);
+        }
+    </script>
+</body>
+</html>

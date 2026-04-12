@@ -2,43 +2,42 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Marketplace TPSIT - Tradizionale</title>
+    <title>Marketplace TPSIT - Fix Finale</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
     
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f0f0; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+        body { font-family: sans-serif; background-color: #f4f4f4; padding: 20px; }
+        .container { max-width: 850px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
         .card { 
-            border: 1px solid #ccc; 
-            padding: 15px; 
-            margin: 10px; 
-            width: 200px; 
-            display: inline-block; 
-            vertical-align: top;
-            background: #fff;
+            border: 1px solid #ddd; padding: 15px; margin: 10px; width: 200px; 
+            display: inline-block; vertical-align: top; background: #fff; text-align: center;
         }
-        #area-acquisto { display: none; margin-top: 20px; padding: 20px; border-top: 2px solid #333; background: #eee; }
-        input { margin-bottom: 10px; padding: 5px; width: 250px; }
+        #area-acquisto { 
+            display: none; margin-top: 30px; padding: 20px; 
+            background: #fdfdfd; border: 2px solid #333; 
+        }
+        input { margin: 5px 0; padding: 8px; width: 80%; }
+        button { cursor: pointer; padding: 10px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Marketplace Semplificato</h1>
+    <h1>Marketplace TPSIT</h1>
     
-    <label>Carica il catalogo CSV: </label>
-    <input type="file" id="input-file" accept=".csv">
+    <p>1. Seleziona il file CSV:</p>
+    <input type="file" id="file-input" accept=".csv">
     
     <div id="vetrina"></div>
 
     <div id="area-acquisto">
-        <h3>Dati per l'ordine</h3>
-        <p>Stai acquistando: <b id="nome-prodotto"></b></p>
+        <h3>2. Registrazione e Acquisto</h3>
+        <p>Prodotto scelto: <span id="nome-prodotto" style="font-weight:bold; color:blue;"></span></p>
         
-        <input type="text" id="campo-nome" placeholder="Inserisci il tuo Nome"><br>
-        <input type="text" id="campo-email" placeholder="Inserisci la tua Email"><br>
+        <input type="text" id="campo-nome" placeholder="Tuo Nome"><br>
+        <input type="text" id="campo-email" placeholder="Tua Email"><br>
         
-        <button onclick="generaRicevuta()">🛒 Scarica Ricevuta PDF</button>
+        <button onclick="generaRicevuta()">🛒 Conferma e Scarica PDF</button>
     </div>
 </div>
 
@@ -46,66 +45,73 @@
     var articoloScelto = "";
     var prezzoScelto = "";
 
-    var fileInput = document.getElementById('input-file');
+    var input = document.getElementById('file-input');
 
-    fileInput.onchange = function(e) {
+    input.onchange = function(e) {
         var file = e.target.files[0];
-        var lettore = new FileReader();
+        if (!file) return;
 
+        var lettore = new FileReader();
         lettore.onload = function(evento) {
-            var testoCsv = evento.target.result;
-            creaVetrina(testoCsv);
+            creaVetrina(evento.target.result);
         };
         lettore.readAsText(file);
     };
 
-    function creaVetrina(dati) {
+    function creaVetrina(testo) {
         var vetrina = document.getElementById('vetrina');
-        var righe = dati.split('\n');
-        var codiceHtml = "";
+        var righe = testo.split('\n');
+        var htmlFinale = "";
 
         for (var i = 1; i < righe.length; i++) {
-            var riga = righe[i].split(',');
+            // .trim() pulisce la riga da spazi bianchi o invii a capo invisibili
+            var riga = righe[i].trim().split(',');
 
             if (riga.length >= 4) {
-                codiceHtml += "<div class='card'>";
-                codiceHtml += "<b>" + riga[0] + "</b>";
-                codiceHtml += "<h3>" + riga[1] + "</h3>";
-                codiceHtml += "<p>" + riga[2] + "</p>";
-                codiceHtml += "<b>" + riga[3] + " €</b><br><br>";
-                codiceHtml += "<button onclick=\"seleziona('" + riga[1] + "', '" + riga[3] + "')\">Scegli</button>";
-                codiceHtml += "</div>";
+                // ATTENZIONE QUI: Usiamo \" per passare i valori alla funzione seleziona
+                htmlFinale += "<div class='card'>";
+                htmlFinale += "<b>" + riga[0] + "</b><br>";
+                htmlFinale += "<h3>" + riga[1] + "</h3>";
+                htmlFinale += "<p>" + riga[2] + "</p>";
+                htmlFinale += "<b>" + riga[3] + " €</b><br><br>";
+                htmlFinale += "<button onclick=\"seleziona('" + riga[1].replace(/'/g, "") + "', '" + riga[3] + "')\">Scegli</button>";
+                htmlFinale += "</div>";
             }
         }
-
-        vetrina.innerHTML = codiceHtml;
+        vetrina.innerHTML = htmlFinale;
     }
 
     function seleziona(nome, prezzo) {
         articoloScelto = nome;
         prezzoScelto = prezzo;
 
+        // Scriviamo il testo nel riquadro
         document.getElementById('nome-prodotto').innerHTML = nome + " (" + prezzo + " €)";
+        
+        // Mostriamo l'area nascosta
         document.getElementById('area-acquisto').style.display = "block";
+        
+        // Portiamo l'utente verso il modulo
+        window.scrollTo(0, document.body.scrollHeight);
     }
-    
+
     function generaRicevuta() {
-        var nomeUtente = document.getElementById('campo-nome').value;
-        var emailUtente = document.getElementById('campo-email').value;
+        var n = document.getElementById('campo-nome').value;
+        var e = document.getElementById('campo-email').value;
 
-        if (nomeUtente == "" || emailUtente == "") {
-            alert("Compila tutti i campi di registrazione!");
-        } else {
-            var doc = new jsPDF();
-
-            doc.text("CONFERMA DI ACQUISTO", 20, 20);
-            doc.text("Acquirente: " + nomeUtente, 20, 40);
-            doc.text("Email: " + emailUtente, 20, 50);
-            doc.text("Oggetto: " + articoloScelto, 20, 75);
-            doc.text("Prezzo: " + prezzoScelto + " Euro", 20, 85);
-
-            doc.save("ordine.pdf");
+        if (n == "" || e == "") {
+            alert("Compila tutti i campi!");
+            return;
         }
+
+        var doc = new jsPDF();
+        doc.text("RICEVUTA DI ACQUISTO", 20, 20);
+        doc.text("Cliente: " + n, 20, 40);
+        doc.text("Email: " + e, 20, 50);
+        doc.text("Prodotto: " + articoloScelto, 20, 70);
+        doc.text("Prezzo: " + prezzoScelto + " Euro", 20, 80);
+        
+        doc.save("ricevuta.pdf");
     }
 </script>
 

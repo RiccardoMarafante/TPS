@@ -2,121 +2,110 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Marketplace TPSIT - Versione Classic</title>
-    
+    <title>Marketplace TPSIT - Tradizionale</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
     
     <style>
         body { font-family: Arial, sans-serif; background-color: #f0f0f0; padding: 20px; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
         .card { 
-            border: 1px solid #ddd; 
+            border: 1px solid #ccc; 
             padding: 15px; 
             margin: 10px; 
             width: 200px; 
             display: inline-block; 
+            vertical-align: top;
             background: #fff;
         }
-        #area-acquisto { 
-            display: none; 
-            margin-top: 20px; 
-            padding: 20px; 
-            border-top: 2px solid #333; 
-            background: #f9f9f9;
-        }
+        #area-acquisto { display: none; margin-top: 20px; padding: 20px; border-top: 2px solid #333; background: #eee; }
         input { margin-bottom: 10px; padding: 5px; width: 250px; }
-        button { cursor: pointer; padding: 5px 15px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Vetrina Prodotti (Libreria 1.4.1)</h1>
+    <h1>Marketplace Semplificato</h1>
     
-    <label>Carica catalogo CSV: </label>
-    <input type="file" id="mio-file" accept=".csv">
+    <label>Carica il catalogo CSV: </label>
+    <input type="file" id="input-file" accept=".csv">
     
     <div id="vetrina"></div>
 
     <div id="area-acquisto">
-        <h3>Dati Acquirente</h3>
-        <p>Prodotto scelto: <b id="prodotto-scelto"></b></p>
+        <h3>Dati per l'ordine</h3>
+        <p>Stai acquistando: <b id="nome-prodotto"></b></p>
         
-        <input type="text" id="nome" placeholder="Inserisci Nome"><br>
-        <input type="email" id="email" placeholder="Inserisci Email"><br>
+        <input type="text" id="campo-nome" placeholder="Inserisci il tuo Nome"><br>
+        <input type="text" id="campo-email" placeholder="Inserisci la tua Email"><br>
         
-        <button onclick="salvaPDF()">Genera PDF</button>
+        <button onclick="generaRicevuta()">🛒 Scarica Ricevuta PDF</button>
     </div>
 </div>
 
 <script>
-    let nomeArticolo = "";
-    let prezzoArticolo = "";
+    var articoloScelto = "";
+    var prezzoScelto = "";
 
-    const fileInput = document.getElementById('mio-file');
+    var fileInput = document.getElementById('input-file');
 
     fileInput.onchange = function(e) {
-        const file = e.target.files[0];
-        const reader = new FileReader();
+        var file = e.target.files[0];
+        var lettore = new FileReader();
 
-        reader.onload = function(evento) {
-            const contenuto = evento.target.result;
-            mostraProdotti(contenuto);
+        lettore.onload = function(evento) {
+            var testoCsv = evento.target.result;
+            creaVetrina(testoCsv);
         };
-        reader.readAsText(file);
+        lettore.readAsText(file);
     };
 
-    function mostraProdotti(dati) {
-        const vetrina = document.getElementById('vetrina');
-        vetrina.innerHTML = ""; 
+    function creaVetrina(dati) {
+        var vetrina = document.getElementById('vetrina');
+        var righe = dati.split('\n');
+        var codiceHtml = "";
 
-        const righe = dati.split('\n');
+        for (var i = 1; i < righe.length; i++) {
+            var riga = righe[i].split(',');
 
-        for (let i = 1; i < righe.length; i++) {
-            const colonne = righe[i].split(',');
-
-            if (colonne.length >= 4) {
-                const div = document.createElement('div');
-                div.className = 'card';
-                div.innerHTML = "<b>" + colonne[0] + "</b><br>" +
-                                "<h3>" + colonne[1] + "</h3>" +
-                                "<p>" + colonne[2] + "</p>" +
-                                "<b>" + colonne[3] + " €</b><br><br>" +
-                                "<button onclick='seleziona(\""+colonne[1]+"\", \""+colonne[3]+"\")'>Scegli</button>";
-                vetrina.appendChild(div);
+            if (riga.length >= 4) {
+                codiceHtml += "<div class='card'>";
+                codiceHtml += "<b>" + riga[0] + "</b>";
+                codiceHtml += "<h3>" + riga[1] + "</h3>";
+                codiceHtml += "<p>" + riga[2] + "</p>";
+                codiceHtml += "<b>" + riga[3] + " €</b><br><br>";
+                codiceHtml += "<button onclick=\"seleziona('" + riga[1] + "', '" + riga[3] + "')\">Scegli</button>";
+                codiceHtml += "</div>";
             }
         }
+
+        vetrina.innerHTML = codiceHtml;
     }
 
-    function seleziona(n, p) {
-        nomeArticolo = n;
-        prezzoArticolo = p;
-        document.getElementById('prodotto-scelto').innerText = n + " (" + p + "€)";
+    function seleziona(nome, prezzo) {
+        articoloScelto = nome;
+        prezzoScelto = prezzo;
+
+        document.getElementById('nome-prodotto').innerHTML = nome + " (" + prezzo + " €)";
         document.getElementById('area-acquisto').style.display = "block";
     }
+    
+    function generaRicevuta() {
+        var nomeUtente = document.getElementById('campo-nome').value;
+        var emailUtente = document.getElementById('campo-email').value;
 
-    function salvaPDF() {
-        const nUtente = document.getElementById('nome').value;
-        const eUtente = document.getElementById('email').value;
+        if (nomeUtente == "" || emailUtente == "") {
+            alert("Compila tutti i campi di registrazione!");
+        } else {
+            var doc = new jsPDF();
 
-        if (nUtente == "" || eUtente == "") {
-            alert("Compila i campi!");
-            return;
+            doc.text("CONFERMA DI ACQUISTO", 20, 20);
+            doc.text("Acquirente: " + nomeUtente, 20, 40);
+            doc.text("Email: " + emailUtente, 20, 50);
+            doc.text("Oggetto: " + articoloScelto, 20, 75);
+            doc.text("Prezzo: " + prezzoScelto + " Euro", 20, 85);
+
+            doc.save("ordine.pdf");
         }
-
-        /* DIFFERENZA IMPORTANTE: 
-           Con la versione 1.4.1 non serve la riga "const { jsPDF } = window.jspdf;"
-           Si crea l'oggetto direttamente così:
-        */
-        var doc = new jsPDF();
-
-        doc.text("RICEVUTA ORDINE", 20, 20);
-        doc.text("Cliente: " + nUtente, 20, 40);
-        doc.text("Email: " + eUtente, 20, 50);
-        doc.text("Articolo: " + nomeArticolo, 20, 70);
-        doc.text("Prezzo: " + prezzoArticolo + " Euro", 20, 80);
-
-        doc.save("ricevuta.pdf");
     }
 </script>
 

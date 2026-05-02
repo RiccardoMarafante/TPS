@@ -6,108 +6,116 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
     
     <style>
-        body { font-family: sans-serif; background-color: #f4f4f4; padding: 20px; }
-        .container { max-width: 850px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        body { font-family: sans-serif; background-color: #f8f9fa; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         .card { 
-            border: 1px solid #ddd; padding: 15px; margin: 10px; width: 200px; 
-            display: inline-block; vertical-align: top; background: #fff; text-align: center;
+            border: 1px solid #ced4da; padding: 15px; margin: 10px; width: 220px; 
+            display: inline-block; vertical-align: top; background: #fff; 
+            border-radius: 6px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         #area-acquisto { 
             display: none; margin-top: 30px; padding: 20px; 
-            background: #fdfdfd; border: 2px solid #333; 
+            background: #e9ecef; border-radius: 6px;
         }
-        input { margin: 5px 0; padding: 8px; width: 80%; }
-        button { cursor: pointer; padding: 10px; margin-top: 10px; }
+        input { margin: 6px 0; padding: 8px; width: 80%; border: 1px solid #ccc; border-radius: 4px; }
+        button { cursor: pointer; padding: 10px 15px; margin-top: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; }
+        button:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Marketplace</h1>
+    <h1>Marketplace - Catalogo Prodotti</h1>
     
-    <p>1. Seleziona il file CSV:</p>
-    <input type="file" id="file-input" accept=".csv">
+    <p>1. Seleziona il file CSV degli articoli:</p>
+    <input type="file" id="file-input" accept=".csv" onchange="caricaFile(this)">
     
     <div id="vetrina"></div>
 
     <div id="area-acquisto">
-        <h3>2. Registrazione e Acquisto</h3>
-        <p>Prodotto scelto: <span id="nome-prodotto" style="font-weight:bold; color:blue;"></span></p>
+        <h3>2. Dati Anagrafici e Carrello</h3>
+        <p>Prodotto selezionato: <span id="nome-prodotto" style="font-weight:bold; color:green;"></span></p>
         
-        <input type="text" id="campo-nome" placeholder="Tuo Nome"><br>
-        <input type="text" id="campo-email" placeholder="Tua Email"><br>
+        <input type="text" id="campo-nome" placeholder="Nome e Cognome"><br>
+        <input type="text" id="campo-email" placeholder="Email"><br>
+        <input type="text" id="campo-indirizzo" placeholder="Indirizzo di spedizione"><br>
         
-        <button onclick="generaRicevuta()">Conferma e Scarica PDF</button>
+        <button onclick="completaAcquisto()">Paga e Scarica Ricevuta (PDF)</button>
     </div>
 </div>
 
 <script>
     let articoloScelto = "";
     let prezzoScelto = "";
+    let fileContenuto = "";
 
-    let input = document.getElementById('file-input');
+    function caricaFile(input) {
+        const file = input.files[0];
+        if (!file) return;
 
-    input.onchange = function(e) {
-        let file = e.target.files[0];
-
-        let lettore = new FileReader();
-        lettore.onload = function(evento) {
-            creaVetrina(evento.target.result);
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            fileContenuto = e.target.result;
+            creaVetrina(fileContenuto);
         };
-        lettore.readAsText(file);
-    };
+        reader.readAsText(file);
+    }
 
     function creaVetrina(testo) {
-        let vetrina = document.getElementById('vetrina');
-        let righe = testo.split('\n');
+        const vetrina = document.getElementById('vetrina');
+        const righe = testo.split('\n');
         let htmlFinale = "";
 
         for (let i = 1; i < righe.length; i++) {
-            let riga = righe[i].trim().split(',');
+            if (!righe[i].trim()) continue;
+            const riga = righe[i].trim().split(',');
 
             if (riga.length >= 4) {
                 htmlFinale += "<div class='card'>";
-                htmlFinale += "<b>" + riga[0] + "</b><br>";
+                htmlFinale += "<b>Categoria: </b>" + riga[0] + "<br><br>";
                 htmlFinale += "<h3>" + riga[1] + "</h3>";
-                htmlFinale += "<p>" + riga[2] + "</p>";
-                htmlFinale += "<b>" + riga[3] + " €</b><br><br>";
-                htmlFinale += "<button data-nome='" + riga[1] + "' data-prezzo='" + riga[3] + "' onclick='selezionaDagliAttributi(this)'>Scegli</button>";
+                htmlFinale += "<p>Specifiche: " + riga[2] + "</p>";
+                htmlFinale += "<b>Prezzo: " + riga[3] + " €</b><br><br>";
+                htmlFinale += "<button onclick='selezionaProdotto(\"" + riga[1] + "\", \"" + riga[3] + "\")'>Carrello</button>";
                 htmlFinale += "</div>";
             }
         }
         vetrina.innerHTML = htmlFinale;
     }
-    function selezionaDagliAttributi(elemento) {
-    var nome = elemento.getAttribute("data-nome");
-    var prezzo = elemento.getAttribute("data-prezzo");
-    seleziona(nome, prezzo);
-}
-    function seleziona(nome, prezzo) {
+
+    function selezionaProdotto(nome, prezzo) {
         articoloScelto = nome;
         prezzoScelto = prezzo;
 
-        document.getElementById('nome-prodotto').innerHTML = nome + " (" + prezzo + " €)";
+        document.getElementById('nome-prodotto').innerText = nome + " (" + prezzo + " €)";
         document.getElementById('area-acquisto').style.display = "block";
-    
     }
 
-    function generaRicevuta() {
-        let n = document.getElementById('campo-nome').value;
-        let e = document.getElementById('campo-email').value;
+    function completaAcquisto() {
+        const nome = document.getElementById('campo-nome').value.trim();
+        const email = document.getElementById('campo-email').value.trim();
+        const indirizzo = document.getElementById('campo-indirizzo').value.trim();
 
-        if (n == "" || e == "") {
-            alert("Compila tutti i campi!");
+        if (nome === "" || email === "" || indirizzo === "") {
+            alert("Compila tutti i campi anagrafici per procedere!");
             return;
         }
 
         let doc = new jsPDF();
-        doc.text("RICEVUTA DI ACQUISTO", 20, 20);
-        doc.text("Cliente: " + n, 20, 40);
-        doc.text("Email: " + e, 20, 50);
-        doc.text("Prodotto: " + articoloScelto, 20, 70);
-        doc.text("Prezzo: " + prezzoScelto + " Euro", 20, 80);
+        doc.setFontSize(16);
+        doc.text("RICEVUTA DI ACQUISTO - MARKETPLACE", 20, 20);
         
-        doc.save("ricevuta.pdf");
+        doc.setFontSize(12);
+        doc.text("Dati Anagrafici del Cliente:", 20, 40);
+        doc.text("Nome: " + nome, 20, 50);
+        doc.text("Email: " + email, 20, 60);
+        doc.text("Indirizzo: " + indirizzo, 20, 70);
+
+        doc.text("Dettagli Ordine:", 20, 90);
+        doc.text("Prodotto: " + articoloScelto, 20, 100);
+        doc.text("Importo Totale: " + prezzoScelto + " Euro", 20, 110);
+        
+        doc.save("ricevuta_ordine.pdf");
     }
 </script>
 

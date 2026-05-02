@@ -70,6 +70,8 @@
         for (let j = 0; j < riga.length; j++) {
             htmlFinale += "<p>" + riga[j] + "</p>";
         }
+        let nomeProdotto = riga[1] || "Prodotto";
+        let prezzoProdotto = riga[3] || "0.00";
         
         htmlFinale += "<button onclick='selezionaProdotto(\"" + nomeProdotto + "\", \"" + prezzoProdotto + "\")'>Carrello</button>";
         htmlFinale += "</div>";

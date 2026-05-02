@@ -76,6 +76,8 @@
                 htmlFinale += "<b>Prezzo: " + riga[3] + " €</b><br><br>";
                 htmlFinale += "<button onclick='selezionaProdotto(\"" + riga[1] + "\", \"" + riga[3] + "\")'>Carrello</button>";
                 htmlFinale += "</div>";
+            }if (riga[1] && riga[3]) {
+                htmlFinale += "<button onclick='selezionaProdotto(\"" + riga[1] + "\", \"" + riga[3] + "\")'>Carrello</button>";
             }
         }
         vetrina.innerHTML = htmlFinale;

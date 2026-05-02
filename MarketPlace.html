@@ -59,29 +59,24 @@
         reader.readAsText(file);
     }
 
-    function creaVetrina(testo) {
-        const vetrina = document.getElementById('vetrina');
-        const righe = testo.split('\n');
-        let htmlFinale = "";
+ function creaVetrina(testo) {
+    const vetrina = document.getElementById('vetrina');
+    const righe = testo.split('\n');
+    let htmlFinale = "";
 
-        for (let i = 1; i < righe.length; i++) {
-            if (!righe[i].trim()) continue;
-            const riga = righe[i].trim().split(',');
-
-            if (riga.length >= 4) {
-                htmlFinale += "<div class='card'>";
-                htmlFinale += "<b>Categoria: </b>" + riga[0] + "<br><br>";
-                htmlFinale += "<h3>" + riga[1] + "</h3>";
-                htmlFinale += "<p>Specifiche: " + riga[2] + "</p>";
-                htmlFinale += "<b>Prezzo: " + riga[3] + " €</b><br><br>";
-                htmlFinale += "<button onclick='selezionaProdotto(\"" + riga[1] + "\", \"" + riga[3] + "\")'>Carrello</button>";
-                htmlFinale += "</div>";
-            }if (riga[1] && riga[3]) {
-                htmlFinale += "<button onclick='selezionaProdotto(\"" + riga[1] + "\", \"" + riga[3] + "\")'>Carrello</button>";
-            }
+    for (let i = 1; i < righe.length; i++) {
+        const riga = righe[i].trim().split(',');
+        htmlFinale += "<div class='card'>";
+        for (let j = 0; j < riga.length; j++) {
+            htmlFinale += "<p>" + riga[j] + "</p>";
         }
-        vetrina.innerHTML = htmlFinale;
+        
+        htmlFinale += "<button onclick='selezionaProdotto(\"" + nomeProdotto + "\", \"" + prezzoProdotto + "\")'>Carrello</button>";
+        htmlFinale += "</div>";
     }
+    
+    vetrina.innerHTML = htmlFinale;
+}
 
     function selezionaProdotto(nome, prezzo) {
         articoloScelto = nome;

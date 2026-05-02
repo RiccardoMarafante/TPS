@@ -51,8 +51,6 @@
 
     function caricaFile(input) {
         const file = input.files[0];
-        if (!file) return;
-
         const reader = new FileReader();
         reader.onload = function(e) {
             fileContenuto = e.target.result;

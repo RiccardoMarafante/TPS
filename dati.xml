@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classe>
     <utente>
-        <nome>Marco</nome>
+        <nome>Gianni</nome>
         <cognome>Rossi</cognome>
-        <eta>16</eta>
-        <sezione>3A</sezione>
+        <eta>18</eta>
+        <sezione>5A</sezione>
         <citta>Roma</citta>
     </utente>
     <utente>
-        <nome>Giulia</nome>
+        <nome>Giannino</nome>
         <cognome>Bianchi</cognome>
-        <eta>15</eta>
-        <sezione>3A</sezione>
+        <eta>17</eta>
+        <sezione>4A</sezione>
         <citta>Milano</citta>
     </utente>
     <utente>
-        <nome>Luca</nome>
+        <nome>Giannone</nome>
         <cognome>Verdi</cognome>
         <eta>16</eta>
         <sezione>3A</sezione>

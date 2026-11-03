@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Anagrafica scolastica</title>
+</head>
+<body>
+
+    <h1>Anagrafica scolastica</h1>
+    <p>Elenco degli utenti registrati</p>
+    <button onclick="caricaDati()">Carica anagrafica</button>
+    <p id="risultato">Premi il pulsante per caricare i dati.</p>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Cognome</th>
+                <th>Età</th>
+                <th>Classe</th>
+                <th>Città</th>
+            </tr>
+        </thead>
+        <tbody id="tabella">
+        </tbody>
+    </table>
+
+    <script>
+        function caricaDati() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "dati.xml", true);
+            
+            xhr.onload = function () {
+                if (xhr.status == 200) {
+                    var xml = xhr.responseXML;
+                    var utenti = xml.getElementsByTagName("utente");
+                    var tabella = document.getElementById("tabella");
+                    
+                    tabella.innerHTML = "";
+
+                    for (var i = 0; i < utenti.length; i++) {
+                        var utente = utenti[i];
+                        var nome = utente.getElementsByTagName("nome")[0].textContent;
+                        var cognome = utente.getElementsByTagName("cognome")[0].textContent;
+                        var eta = utente.getElementsByTagName("eta")[0].textContent;
+                        var sezione = utente.getElementsByTagName("sezione")[0].textContent;
+                        var citta = utente.getElementsByTagName("citta")[0].textContent;
+
+                        var riga = document.createElement("tr");
+
+                        var valori = [nome, cognome, eta, sezione, citta];
+
+                        for (var j = 0; j < valori.length; j++) {
+                            var cella = document.createElement("td");
+                            cella.textContent = valori[j];
+                            riga.appendChild(cella);
+                        }
+
+                        tabella.appendChild(riga);
+                    }
+
+                    document.getElementById("risultato").textContent = "Anagrafica caricata: " + utenti.length + " utenti.";
+                }
+            };
+            
+            xhr.send();
+        }
+    </script>
+
+</body>
+</html>
